@@ -1,9 +1,39 @@
-function getDataPoints (lat, lng, rotation, interval){
-
+/**
+ * Calculate points in direction with specified interval from position
+ *
+ * @param lat
+ * @param lng
+ * @param rotation
+ * @param interval
+ */
+function getDataPoints (lat, lng, rotation, interval, repetitions){
+    var dataPoints = [];
+    for (var i = 0; i < repetitions; i++) {
+        var point = {lat: -1, lng: -1, elv: -1};
+        point.lat = lat + i * Math.sin(rotation) * interval;
+        point.lng = lng + i * Math.cos(rotation) * interval;
+        point.elv = 100;
+        dataPoints.push(point);
+    }
+    return dataPoints;
 };
 
+/**
+ * Calculate height for data points based on tilt
+ *
+ * @param dataPoints
+ * @param tilt
+ * @param interval
+ * @returns {Array}
+ */
 function elevateDataPoints (dataPoints, tilt, interval){
-
+    var elevatedDataPoints = [];
+    for (var i = 0; i < dataPoints.length; i++) {
+        var dataPoint = dataPoints[i];
+        dataPoint.elv = dataPoint.elv + i * interval * Math.tan(tilt);
+        elevatedDataPoints.push(dataPoint);
+    }
+    return elevatedDataPoints;
 };
 
 module.exports = {

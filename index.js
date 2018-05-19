@@ -15,14 +15,12 @@ app.get('/getLocationInfo', function (req, res) {
         lat:lat,
         lng:lng
     }]).then(function(myAltitude){
-        var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval);
+        var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, repetitions);
         dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval, myAltitude);
         res.send(altitude.getIntersection(location,dataPoints).then(function(pois){
             res.send(pois.results[0].name)
         }));
-    })
-
-    
+    })    
 });
 
 
