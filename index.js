@@ -1,37 +1,23 @@
 var express = require('express');
 var axios = require('axios')
 var app = express();
+var pointer = require('./datapoints.js')
+var altitude = require('./altitude.js')
+var poi = require('./poi.js')
+
 
 app.get('/getLocationInfo', function (req, res) {
-    axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json',{params: {
-        key: 'AIzaSyDIc30sNBCP3G4XbxqR6ah7v07Ke8WXEnI',
-        location: '46.061117, 14.476099',
-        radius: 100
-    }})
-    .then(function (locationInfo) {
-        axios.get('https://maps.googleapis.com/maps/api/elevation/json',{params: {
-            key: 'AIzaSyDIc30sNBCP3G4XbxqR6ah7v07Ke8WXEnI',
-            locations: '46.061117, 14.476099'
-        }})
-        .then(function (elevation) {
-            var retObject = {
-                city:locationInfo.data.results[0].name, 
-                elevation:elevation.data.results[0].elevation
-            }
-            res.send(retObject);   
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+    var location = req.query.location;
+    var tilt = req.query.tilt;
+    var rotation = req.query.rotation;
 
+    var dataPoints = pointer.getDataPoints(location,rotation,interval);
+    dataPoints = pointer.elevateDataPoints(dataPoints,tilt,interval);
     
-    
-
+    res.send(altitude.getIntersection(location,dataPoints))
 })
+
+
 
 var server = app.listen(8081, function () {
    var host = server.address().address
