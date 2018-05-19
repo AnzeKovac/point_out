@@ -5,6 +5,9 @@ var pointer = require('./datapoints.js');
 var altitude = require('./altitude.js');
 var poi = require('./poi.js');
 
+app.get("/", function (req, res) {
+    res.send("<h1>Point Out - landing page -- hello world</h1>");
+});
 
 app.get('/getLocationInfo', function (req, res) {
     var lat = req.query.lat;
@@ -34,10 +37,9 @@ function increaseInterval(interval){
 
 }
 
-
 var server = app.listen(8081, function () {
-   var host = server.address().address;
-   var port = server.address().port;
-   
-   console.log("Example app listening at http://%s:%s", host, port);
+    var host = server.address().address;
+    var port = server.address().port;
+
+    console.log("Example app listening at http://%s:%s", host, port);
 });

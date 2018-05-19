@@ -10,8 +10,8 @@ function getDataPoints (lat, lng, rotation, interval, repetitions){
     var dataPoints = [];
     for (var i = 0; i < repetitions; i++) {
         var point = {lat: -1, lng: -1, elv: -1};
-        point.lat = lat + i * Math.sin(rotation) * interval;
-        point.lng = lng + i * Math.cos(rotation) * interval;
+        point.lat = parseFloat(lat) + i * Math.sin(rotation) * interval;
+        point.lng = parseFloat(lng) + i * Math.cos(rotation) * interval;
         point.elv = 100;
         dataPoints.push(point);
     }
