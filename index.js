@@ -11,11 +11,18 @@ app.get('/getLocationInfo', function (req, res) {
     var lng = req.query.lng;
     var tilt = req.query.tilt;
     var rotation = req.query.rotation;
+    altitude.getAltitude([{
+        lat:lat,
+        lng:lng
+    }]).then(function(myAltitude){
+        var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval);
+        dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval, myAltitude);
+        res.send(altitude.getIntersection(location,dataPoints).then(function(pois){
+            res.send(pois.results[0].name)
+        }));
+    })
 
-    var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval);
-    dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval);
     
-    res.send(altitude.getIntersection(location,dataPoints));
 });
 
 
