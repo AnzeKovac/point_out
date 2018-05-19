@@ -1,4 +1,4 @@
-var poi = require('../poi.js')
+var poi = require('./poi.js')
 function getAltitude(dataPoints) {
     var googleMapsApiKey = 'AIzaSyDIc30sNBCP3G4XbxqR6ah7v07Ke8WXEnI'
     return axios.get('https://maps.googleapis.com/maps/api/elevation/json',{params: {
@@ -33,6 +33,7 @@ function getIntersection(dataPoints){
         console.log(error);
     });
 }
+
 
 module.exports = {
     getAltitude

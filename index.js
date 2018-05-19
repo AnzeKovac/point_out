@@ -11,18 +11,28 @@ app.get('/getLocationInfo', function (req, res) {
     var lng = req.query.lng;
     var tilt = req.query.tilt;
     var rotation = req.query.rotation;
+    var interval = 0.01;
+
     altitude.getAltitude([{
         lat:lat,
         lng:lng
     }]).then(function(myAltitude){
-        var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, repetitions);
-        dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval, myAltitude);
-        res.send(altitude.getIntersection(location,dataPoints).then(function(pois){
-            res.send(pois.results[0].name)
-        }));
+        while(interval < 6.5){
+            increaseInterval(interval)
+        }
     })    
 });
 
+function increaseInterval(interval){
+    var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, repetitions);
+    dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval, myAltitude);
+    res.send(altitude.getIntersection(location,dataPoints).then(function(pois){
+        res.send(pois.results[0].name)
+    })).catch(function(){
+        interval *= 5;
+    })
+
+}
 
 
 var server = app.listen(8081, function () {
