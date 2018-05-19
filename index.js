@@ -1,5 +1,4 @@
 var express = require('express');
-var axios = require('axios');
 var app = express();
 var pointer = require('./datapoints.js');
 var altitude = require('./altitude.js');
@@ -20,22 +19,16 @@ app.get('/getLocationInfo', function (req, res) {
         lat:lat,
         lng:lng
     }]).then(function(myAltitude){
-        while(interval < 6.5){
-            increaseInterval(interval)
-        }
+        console.debug(myAltitude)
+        var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, 1);
+        dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval, myAltitude);
+        altitude.getIntersection(dataPoints)
+        //while(interval < 6.5){
+            //increaseInterval(res,interval,lat,lng,tilt,rotation,interval,myAltitude)
+       // }
     })    
 });
 
-function increaseInterval(interval){
-    var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, repetitions);
-    dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval, myAltitude);
-    res.send(altitude.getIntersection(location,dataPoints).then(function(pois){
-        res.send(pois.results[0].name)
-    })).catch(function(){
-        interval *= 5;
-    })
-
-}
 
 var server = app.listen(8081, function () {
     var host = server.address().address;
