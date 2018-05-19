@@ -12,7 +12,7 @@ app.get('/getLocationInfo', function (req, res) {
     var tilt = req.query.tilt;
     var rotation = req.query.rotation;
 
-    var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval);
+    var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, repetitions);
     dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval);
     
     res.send(altitude.getIntersection(location,dataPoints));
