@@ -1,10 +1,10 @@
-function getDataPoints (location,rotation,interval){
+function getDataPoints (lat, lng, rotation, interval){
 
-}
+};
 
-function elevateDataPoints (dataPoints,tilt,interval){
+function elevateDataPoints (dataPoints, tilt, interval){
 
-}
+};
 
 module.exports = {
     getDataPoints,

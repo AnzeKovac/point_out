@@ -1,27 +1,28 @@
 var express = require('express');
-var axios = require('axios')
+var axios = require('axios');
 var app = express();
-var pointer = require('./datapoints.js')
-var altitude = require('./altitude.js')
-var poi = require('./poi.js')
+var pointer = require('./datapoints.js');
+var altitude = require('./altitude.js');
+var poi = require('./poi.js');
 
 
 app.get('/getLocationInfo', function (req, res) {
-    var location = req.query.location;
+    var lat = req.query.lat;
+    var lng = req.query.lng;
     var tilt = req.query.tilt;
     var rotation = req.query.rotation;
 
-    var dataPoints = pointer.getDataPoints(location,rotation,interval);
-    dataPoints = pointer.elevateDataPoints(dataPoints,tilt,interval);
+    var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval);
+    dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval);
     
-    res.send(altitude.getIntersection(location,dataPoints))
-})
+    res.send(altitude.getIntersection(location,dataPoints));
+});
 
 
 
 var server = app.listen(8081, function () {
-   var host = server.address().address
-   var port = server.address().port
+   var host = server.address().address;
+   var port = server.address().port;
    
-   console.log("Example app listening at http://%s:%s", host, port)
-})
+   console.log("Example app listening at http://%s:%s", host, port);
+});
