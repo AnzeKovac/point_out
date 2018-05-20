@@ -11,9 +11,11 @@ function getPOIInfo(location){
                 var points = []
                 var mainPoint = ''
                 for (var i=0;i<response.data.results.length;i++){
-                    points.push(response.data.results[i].name)    
-                    if(i==0){
-                        mainPoint = response.data.results[0].name
+                    if(i<4){
+                        points.push(response.data.results[i].name)    
+                        if(i==0){
+                            mainPoint = response.data.results[0].name
+                        }
                     }
                 }
                 console.log(points)
