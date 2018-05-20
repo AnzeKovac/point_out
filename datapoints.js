@@ -35,7 +35,6 @@ function elevateDataPoints (dataPoints, tilt, interval){
     var tiltRadian = tilt * Math.PI / 180;
     for (var i = 0; i < dataPoints.length; i++) {
         var dataPoint = dataPoints[i];
-        console.log(dataPoint.elv,(i*interval*6300)*(Math.tan(tiltRadian)));
         dataPoint.elv = dataPoint.elv + (i * interval*6300) * (Math.tan(tiltRadian));
         elevatedDataPoints.push(dataPoint);
     }

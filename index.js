@@ -13,7 +13,7 @@ app.get('/getLocationInfo', function (req, res) {
     var lng = req.query.lng;
     var tilt = req.query.tilt;
     var rotation = ((req.query.rotation*-1) * Math.PI / 180)+Math.PI/2
-    var interval = 0.0002;
+    var interval = 0.0001;
     console.log(lat,lng,tilt,rotation,interval)
     altitude.getAltitude([{
         lat:lat,
@@ -26,14 +26,16 @@ app.get('/getLocationInfo', function (req, res) {
 
 function increaseInterval(res,interval,lat,lng,tilt,rotation,myAltitude){
     if(interval < 6.5){
-        var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, 200,myAltitude);
+        var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, 100,myAltitude);
         dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval, myAltitude);
         //uncomment for maps debugger
         //res.send(dataPoints)
         altitude.getIntersection(dataPoints).then(function(response){
             res.send({
-                status:true,
-                place: response
+                status:'success',
+                place: response.names,
+                location: response.location,
+                markerText: response.mainName
             });
         }).catch(function(error){
             interval *= 5
@@ -41,12 +43,16 @@ function increaseInterval(res,interval,lat,lng,tilt,rotation,myAltitude){
             increaseInterval(res,interval,lat,lng,tilt,rotation,myAltitude);  
         })
     }else{
-        res.send('Nothing found')
+        res.send({
+            status: 'rocket',
+            message: "It didn't failed, it didn't work either, try to be more realistic. Not everyone can be Elon Musk"
+        })
     }
     
 }
 
-var server = app.listen(8081, function () {
+var port = process.env.PORT || 8081; 
+var server = app.listen(port, function () {
     var host = server.address().address;
     var port = server.address().port;
 

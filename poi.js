@@ -9,11 +9,19 @@ function getPOIInfo(location){
                 radius:100
             }}).then(function(response){
                 var points = []
+                var mainPoint = ''
                 for (var i=0;i<response.data.results.length;i++){
                     points.push(response.data.results[i].name)    
+                    if(i==0){
+                        mainPoint = response.data.results[0].name
+                    }
                 }
                 console.log(points)
-                resolve(points.join(','))
+                resolve({
+                    names:points.join(','),
+                    location:location,
+                    mainName:mainPoint
+                })
                 
             })
         }else{
