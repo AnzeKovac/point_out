@@ -5,7 +5,7 @@ var altitude = require('./altitude.js');
 var poi = require('./poi.js');
 
 app.get("/", function (req, res) {
-    res.send("<h1>Point Out - landing page -- hello world</h1>");
+    res.send("<h1>Point Out - landing page, we shot nerf bullets agains unauthenticated users</h1>");
 });
 
 app.get('/getLocationInfo', function (req, res) {
