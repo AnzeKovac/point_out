@@ -24,24 +24,39 @@ function getLocationsPipe(dataPoints){
     return locations.join('|')
 }
 
-function getIntersection(dataPoints,res){
-    getAltitude([dataPoints]).then(function (altitudeResponses) {
-        console.debug(altitudeResponses)
-        var actualAltitudes = altitudeResponses.results ? altitudeResponses.results : []
-        if(altitudeResponses.results){
-            for(var i=0;i<actualAltitudes.length;i++){
-                var actualAltitude = actualAltitudes[i].elevation;
-                var calculatedAltitude = dataPoints[i].elv
-                console .debug(actualAltitude,calculatedAltitude)
-                if(actualAltitude>calculatedAltitude){
-                    res.send(poi.getPOIInfo(dataPoints[i]))
+function getIntersection(dataPoints){
+    return new Promise(function(resolve,reject){
+        getAltitude(dataPoints).then(function (altitudeResponses) {
+            var actualAltitudes = altitudeResponses.data.results ? altitudeResponses.data.results : []
+            var valueToCheck = undefined;
+            if(actualAltitudes){
+                for(var i=0;i<actualAltitudes.length;i++){
+                    var actualAltitude = actualAltitudes[i].elevation;
+                    var calculatedAltitude = dataPoints[i].elv
+                    console .debug(actualAltitude,calculatedAltitude)
+                    if(actualAltitude>calculatedAltitude){
+                        valueToCheck = dataPoints[i]
+                        break;
+                        
+                    }
                 }
+                if(valueToCheck == undefined){
+                    reject('Nothing found')
+                }
+                console.debug('Get INFO for',valueToCheck); 
+
+                poi.getPOIInfo(valueToCheck).then(function(response){
+                    resolve(response)
+                }).catch(function(error){
+                    console.log(error)
+                })
             }
-        }
+        })
+        .catch(function (error) { 
+            reject('No cross found')
+        });
     })
-    .catch(function (error) {
-        
-    });
+    
 }
 
 

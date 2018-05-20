@@ -12,23 +12,35 @@ app.get('/getLocationInfo', function (req, res) {
     var lat = req.query.lat;
     var lng = req.query.lng;
     var tilt = req.query.tilt;
-    var rotation = req.query.rotation;
-    var interval = 0.01;
+    var rotation = req.query.rotation * Math.PI / 180;
+    var interval = 0.0001;
 
     altitude.getAltitude([{
         lat:lat,
         lng:lng
     }]).then(function(myAltitude){
-        console.debug(myAltitude)
-        var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, 1);
-        dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval, myAltitude);
-        altitude.getIntersection(dataPoints)
-        //while(interval < 6.5){
-            //increaseInterval(res,interval,lat,lng,tilt,rotation,interval,myAltitude)
-       // }
+        console.debug(myAltitude.data.results[0].elevation)
+        increaseInterval(res,interval,lat,lng,tilt,rotation,parseInt(myAltitude.data.results[0].elevation)+10)
     })    
 });
 
+function increaseInterval(res,interval,lat,lng,tilt,rotation,myAltitude){
+    if(interval < 6.5){
+        var dataPoints = pointer.getDataPoints(lat, lng, rotation, interval, 100,myAltitude);
+        dataPoints = pointer.elevateDataPoints(dataPoints, tilt, interval, myAltitude);
+        res.send(dataPoints);
+        altitude.getIntersection(dataPoints).then(function(response){
+            res.send(response);
+        }).catch(function(error){
+            interval *= 5
+            console.log('Range increase',interval)
+            increaseInterval(res,interval,lat,lng,tilt,rotation,myAltitude);  
+        })
+    }else{
+        res.send('Nothing found')
+    }
+    
+}
 
 var server = app.listen(8081, function () {
     var host = server.address().address;
