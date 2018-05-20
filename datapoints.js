@@ -28,9 +28,15 @@ function getDataPoints (lat, lng, rotation, interval, repetitions,elevation){
  */
 function elevateDataPoints (dataPoints, tilt, interval){
     var elevatedDataPoints = [];
+    if(tilt > 15 ) tilt = 15
+    if(tilt < -15) tilt = -15 
+    tilt *= 6;
+    console.debug(tilt);
+    var tiltRadian = tilt * Math.PI / 180;
     for (var i = 0; i < dataPoints.length; i++) {
         var dataPoint = dataPoints[i];
-        dataPoint.elv = dataPoint.elv + i * interval * Math.tan(tilt);
+        console.log(dataPoint.elv,(i*interval*6300)*(Math.tan(tiltRadian)));
+        dataPoint.elv = dataPoint.elv + (i * interval*6300) * (Math.tan(tiltRadian));
         elevatedDataPoints.push(dataPoint);
     }
     return elevatedDataPoints;

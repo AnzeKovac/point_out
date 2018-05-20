@@ -1,7 +1,6 @@
 var poi = require('./poi.js')
 var axios = require('axios');
 function getAltitude(dataPoints) {
-    console.debug(dataPoints)
     return new Promise(function(resolve,reject){
         var googleMapsApiKey = 'AIzaSyDIc30sNBCP3G4XbxqR6ah7v07Ke8WXEnI'
         var locationsPipe = getLocationsPipe(dataPoints);
@@ -33,7 +32,7 @@ function getIntersection(dataPoints){
                 for(var i=0;i<actualAltitudes.length;i++){
                     var actualAltitude = actualAltitudes[i].elevation;
                     var calculatedAltitude = dataPoints[i].elv
-                    console .debug(actualAltitude,calculatedAltitude)
+                    //console .debug(actualAltitude,calculatedAltitude)
                     if(actualAltitude>calculatedAltitude){
                         valueToCheck = dataPoints[i]
                         break;
@@ -44,7 +43,7 @@ function getIntersection(dataPoints){
                     reject('Nothing found')
                 }
                 console.debug('Get INFO for',valueToCheck); 
-
+                console.debug('https://www.google.com/maps/search/'+valueToCheck.lat+'%2C'+valueToCheck.lng)
                 poi.getPOIInfo(valueToCheck).then(function(response){
                     resolve(response)
                 }).catch(function(error){

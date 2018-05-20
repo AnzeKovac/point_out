@@ -8,7 +8,13 @@ function getPOIInfo(location){
                 location: location.lat+', '+location.lng,
                 radius:100
             }}).then(function(response){
-                resolve(response.data.results[0].name)
+                var points = []
+                for (var i=0;i<response.data.results.length;i++){
+                    points.push(response.data.results[i].name)    
+                }
+                console.log(points)
+                resolve(points.join(','))
+                
             })
         }else{
             reject('Nothing found')
