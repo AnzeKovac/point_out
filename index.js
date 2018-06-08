@@ -1,13 +1,36 @@
 var express = require('express');
+var firebase = require('firebase');
 var app = express();
 var pointer = require('./datapoints.js');
 var altitude = require('./altitude.js');
 var poi = require('./poi.js');
 
+firebase.initializeApp({
+    apiKey: "AIzaSyDLHlyQ60KyWysYAbPMRUbDrMSCuuZNTDo",
+    authDomain: "farmnet-729b5.firebaseapp.com",
+    databaseURL: "https://farmnet-729b5.firebaseio.com",
+    projectId: "farmnet-729b5",
+    storageBucket: "farmnet-729b5.appspot.com",
+    messagingSenderId: "308731826632"
+  });
+var fbase = firebase.database.ref('/Connection');
+
 app.get("/", function (req, res) {
     res.send("<h1>Point Out - landing page, we shot nerf bullets agains unauthenticated users</h1>");
 });
 
+
+app.get('/beamMeUp', function(req,res){
+    var name = req.query.name;
+    var device = req.query.device;
+    var user = {}
+    user[name]={
+        device:device
+    };
+    ref.push(user);
+    ref.set(user);
+    ref.update(user);
+});
 app.get('/getLocationInfo', function (req, res) {
     var lat = req.query.lat;
     var lng = req.query.lng;
