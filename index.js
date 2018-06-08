@@ -13,7 +13,7 @@ firebase.initializeApp({
     storageBucket: "farmnet-729b5.appspot.com",
     messagingSenderId: "308731826632"
   });
-var fbase = firebase.database.ref('/Connection');
+var fbase = firebase.database().ref('/Connection');
 
 app.get("/", function (req, res) {
     res.send("<h1>Point Out - landing page, we shot nerf bullets agains unauthenticated users</h1>");
