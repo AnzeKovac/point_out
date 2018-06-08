@@ -29,9 +29,9 @@ app.get('/beamMeUpScotty', function(req,res){
     user[name]={
         device:device
     };
-    fbase.push(user);
-    fbase.set(user);
-    fbase.update(user);
+    firebase.database().ref('/' + name).set({
+        device: device,
+      });
     res.send({
         status:'ok',
         message:'Boo yah! Your up'
