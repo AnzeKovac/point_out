@@ -27,9 +27,13 @@ app.get('/beamMeUp', function(req,res){
     user[name]={
         device:device
     };
-    ref.push(user);
-    ref.set(user);
-    ref.update(user);
+    fbase.push(user);
+    fbase.set(user);
+    fbase.update(user);
+    res,send({
+        status:'ok',
+        message:'Boo yah! Your up'
+    })
 });
 app.get('/getLocationInfo', function (req, res) {
     var lat = req.query.lat;
