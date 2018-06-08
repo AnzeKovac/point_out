@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Garaža.io</title>
+    <style>
+        .user_name{
+            font-size:14px;
+            font-weight: bold;
+        }
+        .comments-list .media{
+            border-bottom: 1px dotted #ccc;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.bundle.min.js"></script>
+</head>
+
+  <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="page-header">
+                <h1><small class="pull-right" id="connections">{{length}} connections</small> Connections </h1>
+                </div> 
+                <div class="comments-list" id="comments">
+                    {{#each comments}}
+                    <div class="media">
+                        <p class="pull-right">
+                            <small>Today</small>
+                        </p> 
+                        <a class="media-left" href="#"> <img style="width:4rem" src="http://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png"></a>
+                        <div class="media-body">
+                            <h4 class="media-heading user_name">{{@key}}</h4>
+                            {{this.device}}
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>            
+            </div>
+        </div>
+    </div>
+  </body>
+</html>

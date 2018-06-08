@@ -4,6 +4,8 @@ var app = express();
 var pointer = require('./datapoints.js');
 var altitude = require('./altitude.js');
 var poi = require('./poi.js');
+var fs = require('fs');
+var handlebars = require('handlebars');
 
 firebase.initializeApp({
     apiKey: "AIzaSyDLHlyQ60KyWysYAbPMRUbDrMSCuuZNTDo",
@@ -13,14 +15,14 @@ firebase.initializeApp({
     storageBucket: "farmnet-729b5.appspot.com",
     messagingSenderId: "308731826632"
   });
-var fbase = firebase.database().ref('/Connection');
+var fbase = firebase.database().ref('/');
 
 app.get("/", function (req, res) {
     res.send("<h1>Point Out - landing page, we shot nerf bullets agains unauthenticated users</h1>");
 });
 
 
-app.get('/beamMeUp', function(req,res){
+app.get('/beamMeUpScotty', function(req,res){
     var name = req.query.name;
     var device = req.query.device;
     var user = {}
@@ -30,11 +32,29 @@ app.get('/beamMeUp', function(req,res){
     fbase.push(user);
     fbase.set(user);
     fbase.update(user);
-    res,send({
+    res.send({
         status:'ok',
         message:'Boo yah! Your up'
     })
 });
+
+app.get('/app/:slug', function(req,res){    
+    var slug =[req.params.slug][0];                    
+    fbase.on("value", function(snapshot){
+        var source = fs.readFileSync(slug, "utf8"); // bring in the HTML file
+        var template = handlebars.compile(source); // replace all of the data
+        var html = template({
+            comments:snapshot.val(),
+            length:Object.keys(snapshot.val()).length
+        })
+        console.log(snapshot.val());
+        res.send(html); // send to client
+        fbase.off()
+    });
+
+});
+
+
 app.get('/getLocationInfo', function (req, res) {
     var lat = req.query.lat;
     var lng = req.query.lng;
@@ -50,6 +70,8 @@ app.get('/getLocationInfo', function (req, res) {
         increaseInterval(res,interval,lat,lng,tilt,rotation,parseInt(myAltitude.data.results[0].elevation)+10)
     })    
 });
+
+
 
 function increaseInterval(res,interval,lat,lng,tilt,rotation,myAltitude){
     if(interval < 6.5){
