@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Garaža.io</title>
+    <style>
+        .user_name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .comments-list .media {
+            border-bottom: 1px dotted #ccc;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    
+    <script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyDLHlyQ60KyWysYAbPMRUbDrMSCuuZNTDo",
+        authDomain: "farmnet-729b5.firebaseapp.com",
+        databaseURL: "https://farmnet-729b5.firebaseio.com",
+        projectId: "farmnet-729b5",
+        storageBucket: "farmnet-729b5.appspot.com",
+        messagingSenderId: "308731826632"
+    };
+    firebase.initializeApp(config);
+    var fbase = firebase.database().ref('/');
+    fbase.on("value", function(snapshot){
+        var template = Handlebars.compile($("#body-template").html());
+        $("#comments").html(template({
+            comments:snapshot.val(),
+            length:Object.keys(snapshot.val()).length
+        }));
+    });
+    </script>
+
+</head>
+
+<body>
+    <div id="comments"></div>
+    <script id="body-template" type="x-handlebars-template">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                <h1><small class="pull-right" id="connections">{{length}} connections</small> Connections </h1>
+                </div> 
+                <div class="comments-list" id="comments">
+                    {{#each comments}}
+                    <div class="media">
+                        <p class="pull-right">
+                            <small>Today</small>
+                        </p> 
+                        <a class="media-left" href="#"> <img style="width:4rem" src="http://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png"></a>
+                        <div class="media-body">
+                            <h4 class="media-heading user_name">{{@key}}</h4>
+                            {{this.device}}
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>            
+            </div>
+        </div>
+    </div>
+    </script>
+</body>
+
+</html>

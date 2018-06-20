@@ -25,9 +25,11 @@ app.get("/", function (req, res) {
 app.get('/beamMeUpScotty', function(req,res){
     var name = req.query.name;
     var device = req.query.device;
+    var light = req.query.light;
     var user = {}
     user[name]={
-        device:device
+        device:device,
+        light:light
     };
     firebase.database().ref('/' + name).set({
         device: device,
