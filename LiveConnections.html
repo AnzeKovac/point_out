@@ -34,6 +34,7 @@
     var fbase = firebase.database().ref('/');
     fbase.on("value", function(snapshot){
         var template = Handlebars.compile($("#body-template").html());
+        var comment
         $("#comments").html(template({
             comments:snapshot.val(),
             length:Object.keys(snapshot.val()).length
