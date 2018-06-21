@@ -30,7 +30,8 @@ app.get('/beamMeUpScotty', function(req,res){
     firebase.database().ref('/' + name).set({
         device: device,
         light:light,
-        lightSensor:lightOriginal
+        lightSensor:lightOriginal,
+        lastUpdated: Date.toString()
       });
     res.send({
         status:'ok',
