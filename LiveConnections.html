@@ -15,6 +15,7 @@
         }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"crossorigin="anonymous">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"  crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
@@ -41,38 +42,63 @@
             comments:snapshot.val(),
             length:Object.keys(snapshot.val()).length
         }));
+        var dt = new Date()
+        $('#ago').html(dt.toLocaleTimeString())
     });
     </script>
 
 </head>
 
 <body>
-    <div id="comments"></div>
     <script id="body-template" type="x-handlebars-template">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="page-header">
-                <h1><small class="pull-right" id="connections">{{length}} connections</small> Connections </h1>
-                </div> 
-                <div class="comments-list" id="comments">
-                    {{#each comments}}
-                    <div class="media">
-                        <a class="media-left" href="#"> <img style="width:3rem" src="http://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png"></a>
-                        <div class="media-body">
-                            <h4 class="media-heading user_name">{{@key}}</h4>
-                            {{this.device}}
-                            <div class="progress">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{this.light}}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+    <div class="col-md-12 column">
+            <div class="list-group">
+                {{#each comments}}
+                <div class="list-group-item">
+                    <h4 class="list-group-item-heading">
+                        {{@key}}
+                        <a href="#"  data-toggle="tooltip" data-placement="bottom" title="Last updated at : {{this.lastUpdated}}">
+                          <i class="fa fa-info-circle"></i>
+                        </a>
+                    </h4>
+                    <p class="list-group-item-text">
+                        <span class="label label-danger">{{this.device}}</span>
+                        <div class="progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{this.light}}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                    </div>
-                    {{/each}}
-                </div>            
+                    </p>
+                </div>
+                {{/each}}
             </div>
         </div>
-    </div>
     </script>
+  
+  
+  <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Agilcon City Lights</h1>
+        </div>
+      </div>
+      <div class="row clearfix">
+          <div class="col-md-12 column">
+              <div class="panel panel-warning">
+                <div class="panel-heading">
+                  <h3 class="panel-title">
+                    Light Sensors
+                    <small class="pull-right">Refreshed at <span id="ago"></span></small>
+                  </h3>
+                </div>                
+              </div>
+            
+
+              <div class="row clearfix" id="comments">
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+  
 </body>
 
 </html>

@@ -32,7 +32,7 @@ app.get('/beamMeUpScotty', function(req,res){
         device: device,
         light:light,
         lightSensor:lightOriginal,
-        lastUpdated: lastUpdated.toLocaleString()
+        lastUpdated: lastUpdated.toLocaleString('sl-SI')
       });
     res.send({
         status:'ok',
