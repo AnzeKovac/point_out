@@ -26,7 +26,7 @@ app.get('/beamMeUpScotty', function(req,res){
     var name = req.query.name;
     var device = req.query.device;
     var lightOriginal = req.query.light;
-    var light = (lightOriginal/1024)*100;
+    var light = ((1024-lightOriginal)/1024)*100;
     var lastUpdated = new Date();
     firebase.database().ref('/' + name).set({
         device: device,
